@@ -1,2 +1,2 @@
-# CSC3170-DBMS
+# CSC3170-RIIMS
 Final Project
