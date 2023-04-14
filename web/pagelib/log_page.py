@@ -4,22 +4,17 @@ import pandas as pd
 
 from utils.control import *
 
+def authorize_login(name, password):
+    # cnx = mysql.connector.connect(
+    #     host="127.0.0.1",
+    #     port=3306,
+    #     user="root",
+    #     password="123456",
+    #     database="project") 
 
-def log_in_page():
-    cnx = mysql.connector.connect(
-        host="127.0.0.1",
-        port=3306,
-        user="root",
-        password="123456",
-        database="project") 
-    
-    st.text("Please login here.")
-    restaurant_name = st.text_input("Restaurant name", placeholder="Fake login name: a")
-    password = st.text_input("Password", placeholder="Fake login password: 1")
-
-    # # Get a cursor
+    # Get a cursor
     # cur = cnx.cursor()
-    # # Execute a query
+    # Execute a query
     # cur.execute("""
     #             SELECT ROLE, USER_ID  
     #             FROM user
@@ -28,31 +23,35 @@ def log_in_page():
     #             AND (PASSWORD = %s);
     #             """, (first_name,last_name,password))
     # result = cur.fetchone()
+    # cnx.close()
     # if result:
     #    ID = result
 
     # aka. "RestaurantID"
     # Temp login info
-    # if restaurant_name in ['a']:
+    # if name in ['a']:
     #     ID = 114514  
     # else:
     #     ID = None
     ID = 114514  
+    Name = 'Kuai Le Shi Jian'
 
+    if ID == None:
+        st.warning("Invalid Login Information! Please Recheck Your Input!")
+    else:
+        move_to_backend_state()
+        if "RestaurantID" not in st.session_state: 
+            st.session_state["RestaurantID"] = 0
+        st.session_state["RestaurantID"] = ID
+        st.session_state["RestaurantName"] = Name
 
-    # Fetch one result
-    if st.button("Log In!"):
-        if ID == None:
-            st.warning("INVALID INFORMATION! RECHECK YOUR INPUT!")
-        else:
-            move_to_backend_state()
-            if "RestaurantID" not in st.session_state: 
-                st.session_state["RestaurantID"] = 0
-            st.session_state["RestaurantID"] = ID
-            st.success("Log in Seccessfully as staff. Please click the button again.")
-            st.balloons()
+    
+def log_in_page():
+    st.text("Please login here.")
+    restaurant_name = st.text_input("Restaurant name", placeholder="keep empty and login!")
+    password = st.text_input("Password", placeholder="keep empty and login!")
 
-    cnx.close()
+    st.button("Log In!", on_click=authorize_login, args=(restaurant_name, password))
 
 def sign_up_page():
     st.text("Please leave your information here, our sales manager will contact you later.")
