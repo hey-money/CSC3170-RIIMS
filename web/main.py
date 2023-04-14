@@ -17,7 +17,7 @@ from pagelib.backend.summary_page import summary_page
 from pagelib.backend.analysis_page import foo
 
 
-st.set_page_config(page_title=config.ProjName)
+st.set_page_config(page_title=config.ProjName, page_icon='assets/online-library.png')
 
 
 if "function" not in st.session_state: 
