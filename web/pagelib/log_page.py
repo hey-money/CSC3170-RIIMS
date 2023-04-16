@@ -2,7 +2,8 @@ import streamlit as st
 import mysql.connector
 import pandas as pd
 
-from utils.control import *
+from utils import control as control_util
+from utils import general as general_util
 from utils import sql
 
 def authorize_login(name, password):
@@ -18,26 +19,23 @@ def authorize_login(name, password):
 
     cnx.close()
 
-    print('login query result:', result)
+    general_util.log_string(f'login query result: {result}')
 
+    ### code for real use ###
     if result:
         ID = result[0]
         Name = result[1]
     else:
         ID = None
-    # aka. "RestaurantID"
-    # Temp login info
-    # if name in ['a']:
-    #     ID = 114514  
-    # else:
-    #     ID = None
+
+    ### code for fake use ###
     # ID = 114514  
     # Name = 'Kuai Le Shi Jian'
 
-    if ID == None:
+    if ID is None:
         st.warning("Invalid Login Information! Please Recheck Your Input!")
     else:
-        move_to_backend_state()
+        control_util.move_to_backend_state()
         if "RestaurantID" not in st.session_state: 
             st.session_state["RestaurantID"] = 0
         st.session_state["RestaurantID"] = ID
@@ -57,13 +55,6 @@ def sign_up_page():
     st.text("Our sales manager will contact you later to sign the contract.")
     st.text("Then, your restaurant account will be created.")
 
-    # cnx = mysql.connector.connect(
-    # host="127.0.0.1",
-    # port=3306,
-    # user="root",
-    # password="123456",
-    # database="project") 
-    # cur = cnx.cursor()
 
     first_name = st.text_input("First Name")
     last_name = st.text_input("Last Name")

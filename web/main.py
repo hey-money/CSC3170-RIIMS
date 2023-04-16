@@ -15,6 +15,7 @@ import webconfig as config
 from pagelib.log_page import *
 from pagelib.backend.summary_page import summary_page
 from pagelib.backend.analysis_page import foo
+from utils import control as control_util
 
 
 st.set_page_config(page_title=config.ProjName, page_icon='assets/online-library.png')
@@ -76,5 +77,5 @@ elif st.session_state["function"] == "backend":
     elif selected_c == "Long term analysis":
         foo()
         # custormer_order_page()
-    st.button("Log out", on_click=move_to_log_state)
+    st.button("Log out", on_click=control_util.move_to_log_state)
 

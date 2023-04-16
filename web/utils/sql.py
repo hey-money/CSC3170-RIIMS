@@ -1,3 +1,8 @@
+'''
+SQL use utilities
+Author: Lai
+Create Date: 2023.4.16
+'''
 import mysql.connector
 import webconfig as config
 
