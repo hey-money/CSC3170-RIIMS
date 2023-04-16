@@ -2,15 +2,15 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-DROP SCHEMA IF EXISTS `Pro` ;
-CREATE SCHEMA IF NOT EXISTS `Pro` DEFAULT CHARACTER SET utf8 ;
-USE `Pro` ;
+DROP SCHEMA IF EXISTS `RIIMAGES` ;
+CREATE SCHEMA IF NOT EXISTS `RIIMAGES` DEFAULT CHARACTER SET utf8 ;
+USE `RIIMAGES` ;
 
 -- -----------------------------------------------------
--- Create below: Table `Pro`.`order_details`
+-- Create below: Table `RIIMAGES`.`order_details`
 -- -----------------------------------------------------
 CREATE TABLE `order_details` (
-    `ORDER_ID` VARCHAR(10) NOT NULL,
+	`ORDER_ID` VARCHAR(10) NOT NULL,
     `FOOD_ID` VARCHAR(10) NOT NULL,
     `QUANTITY` DECIMAL(3,0) NOT NULL,
     PRIMARY KEY (`ORDER_ID`, `FOOD_ID`),
@@ -20,14 +20,14 @@ CREATE TABLE `order_details` (
 
 
 -- -----------------------------------------------------
--- Create below: Table `Pro`.`order`
+-- Create below: Table `RIIMAGES`.`order`
 -- -----------------------------------------------------
 CREATE TABLE `order` (
-    `ORDER_ID` VARCHAR(10) NOT NULL,
+	`ORDER_ID` VARCHAR(10) NOT NULL,
     `RESTAURANT_ID` VARCHAR(10) NOT NULL,
     `CUSTOMER_ID` VARCHAR(32) NOT NULL,
     `ORDER_TIME` DATETIME NOT NULL,
-    `ORDER_STATUS` VARCHAR(10) NOT NULL,
+    `ORDER_STATUS` VARCHAR(20) NOT NULL,
     `TABLE_ID` VARCHAR(10) NOT NULL,
     PRIMARY KEY (`ORDER_ID`),
     FOREIGN KEY (`CUSTOMER_ID`) references `customer`(`CUSTOMER_ID`),
@@ -36,10 +36,10 @@ CREATE TABLE `order` (
 
 
 -- -----------------------------------------------------
--- Create below: Table `Pro`.`order_customer`
+-- Create below: Table `RIIMAGES`.`order_customer`
 -- -----------------------------------------------------
 CREATE TABLE `order_customer` (
-    `ORDER_ID` VARCHAR(10) NOT NULL,
+	`ORDER_ID` VARCHAR(10) NOT NULL,
     `CUSTOMER_ID` VARCHAR(32) NOT NULL,
     PRIMARY KEY (`ORDER_ID`, `CUSTOMER_ID`),
      FOREIGN KEY (`ORDER_ID`) references `order`(`ORDER_ID`),
@@ -48,27 +48,27 @@ CREATE TABLE `order_customer` (
 
 
 -- -----------------------------------------------------
--- Create below: Table `Pro`.`customer`
+-- Create below: Table `RIIMAGES`.`customer`
 -- -----------------------------------------------------
 CREATE TABLE `customer` (
-    `CUSTOMER_ID` VARCHAR(32) NOT NULL,
-    `CUSTOMER_NAME` VARCHAR(10) NOT NULL,
-    `PHONE_NUMBER` VARCHAR(20),
+	`CUSTOMER_ID` VARCHAR(32) NOT NULL,
+    `CUSTOMER_NAME` VARCHAR(50) NOT NULL,
+    `PHONE_NUMBER` VARCHAR(20) NOT NULL,
     `SEX` VARCHAR(10) NOT NULL,
-    `BIRTH` VARCHAR(10) NOT NULL,
+    `BIRTH` VARCHAR(20) NOT NULL,
     `DISCOUNT_RATE` FLOAT,
     PRIMARY KEY (`CUSTOMER_ID`)
 );
 
 
 -- -----------------------------------------------------
--- Create below: Table `Pro`.`restaurant`
+-- Create below: Table `RIIMAGES`.`restaurant`
 -- -----------------------------------------------------
 CREATE TABLE `restaurant` (
-    `RESTAURANT_ID` VARCHAR(10) NOT NULL,
-    `RESTAURANT_NAME` VARCHAR(10) NOT NULL,
-    `RESTAURANT_ADDRESS` VARCHAR(10) NOT NULL,
-    `SALES` FLOAT NOT NULL,
+	`RESTAURANT_ID` VARCHAR(10) NOT NULL,
+    `RESTAURANT_NAME` VARCHAR(50) NOT NULL,
+    `RESTAURANT_ADDRESS` VARCHAR(50) NOT NULL,
+	`SALES` FLOAT NOT NULL,
     `LOGIN_NAME` VARCHAR(32) NOT NULL,
     `LOGIN_PASSWORD` VARCHAR(32) NOT NULL,
     PRIMARY KEY (`RESTAURANT_ID`)
@@ -76,10 +76,10 @@ CREATE TABLE `restaurant` (
 
 
 -- -----------------------------------------------------
--- Create below: Table `Pro`.`food`
+-- Create below: Table `RIIMAGES`.`food`
 -- -----------------------------------------------------
 CREATE TABLE `food` (
-    `FOOD_ID` VARCHAR(10) NOT NULL,
+	`FOOD_ID` VARCHAR(10) NOT NULL,
     `RESTAURANT_ID` VARCHAR(10) NOT NULL,
     `FOOD_TYPE` VARCHAR(20) NOT NULL,
     `FOOD_NAME` VARCHAR(20) NOT NULL,
@@ -91,15 +91,33 @@ CREATE TABLE `food` (
 
 
 -- -----------------------------------------------------
--- Create below: Table `Pro`.`table`
+-- Create below: Table `RIIMAGES`.`table`
 -- -----------------------------------------------------
 CREATE TABLE `table` (
-    `TABLE_ID` VARCHAR(10) NOT NULL,
+	`TABLE_ID` VARCHAR(10) NOT NULL,
     `RESTAURANT_ID` VARCHAR(10) NOT NULL,
     `SEAT_NUMBER` DECIMAL(2,0) NOT NULL,
-    `TABLE_STATUS` VARCHAR(10) NOT NULL,
+    `TABLE_STATUS` VARCHAR(20) NOT NULL,
     PRIMARY KEY (`TABLE_ID`, `RESTAURANT_ID`),
-     FOREIGN KEY (`RESTAURANT_ID`) references `restaurant`(`RESTAURANT_ID`)
+	 FOREIGN KEY (`RESTAURANT_ID`) references `restaurant`(`RESTAURANT_ID`)
+);
+
+
+-- -----------------------------------------------------
+-- Create below: Table `RIIMAGES`.`signup_records`
+-- -----------------------------------------------------
+CREATE TABLE `signup_records` (
+	`RECORD_ID` INT NOT NULL AUTO_INCREMENT,
+	`FIRST_NAME` VARCHAR(20) NOT NULL,
+    `LAST_NAME` VARCHAR(20) NOT NULL,
+    `PHONE_NUMBER` VARCHAR(20) NOT NULL,
+    `COUNTRY_NAME` VARCHAR(20) NOT NULL,
+	`PROVINCE_NAME` VARCHAR(20),
+    `STREET_ADDRESS` VARCHAR(50) NOT NULL,
+    `ACCOUNT_PASSWORD` VARCHAR(32) NOT NULL,
+    `EMAIL_ADDRESS` VARCHAR(30) NOT NULL,
+    `ACCOUNT_NAME` VARCHAR(50) NOT NULL,
+    PRIMARY KEY (`RECORD_ID`)
 );
 
 
