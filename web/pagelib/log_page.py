@@ -22,15 +22,15 @@ def authorize_login(name, password):
     general_util.log_string(f'login query result: {result}')
 
     ### code for real use ###
-    # if result:
-    #     ID = result[0]
-    #     Name = result[1]
-    # else:
-    #     ID = None
+    if result:
+        ID = result[0]
+        Name = result[1]
+    else:
+        ID = None
 
     ### code for fake use ###
-    ID = 114514  
-    Name = 'Kuai Le Shi Jian'
+    # ID = 114514  
+    # Name = 'Kuai Le Shi Jian'
 
     if ID is None:
         st.warning("Invalid Login Information! Please Recheck Your Input!")

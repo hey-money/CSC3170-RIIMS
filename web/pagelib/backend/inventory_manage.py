@@ -11,7 +11,6 @@ import numpy as np
 from utils import sql
 
 
-# TODO on 4.16: an outline and some possible things
 def inventory_management_page():
     st.title("Inventory management")
     st.text("In this page, you can increase/decrease inventory quantities.")
