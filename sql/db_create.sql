@@ -10,8 +10,8 @@ USE `RIIMAGES` ;
 -- Create below: Table `RIIMAGES`.`order_details`
 -- -----------------------------------------------------
 CREATE TABLE `order_details` (
-	`ORDER_ID` VARCHAR(10) NOT NULL,
-    `FOOD_ID` VARCHAR(10) NOT NULL,
+	`ORDER_ID` INT NOT NULL,
+    `FOOD_ID` INT NOT NULL,
     `QUANTITY` DECIMAL(3,0) NOT NULL,
     PRIMARY KEY (`ORDER_ID`, `FOOD_ID`),
     FOREIGN KEY (`ORDER_ID`) references `order`(`ORDER_ID`),
@@ -23,12 +23,12 @@ CREATE TABLE `order_details` (
 -- Create below: Table `RIIMAGES`.`order`
 -- -----------------------------------------------------
 CREATE TABLE `order` (
-	`ORDER_ID` VARCHAR(10) NOT NULL,
-    `RESTAURANT_ID` VARCHAR(10) NOT NULL,
-    `CUSTOMER_ID` VARCHAR(32) NOT NULL,
+	`ORDER_ID` INT NOT NULL AUTO_INCREMENT,
+    `RESTAURANT_ID` INT NOT NULL,
+    `CUSTOMER_ID` INT NOT NULL,
     `ORDER_TIME` DATETIME NOT NULL,
-    `ORDER_STATUS` VARCHAR(20) NOT NULL,
-    `TABLE_ID` VARCHAR(10) NOT NULL,
+    `ORDER_STATUS` INT NOT NULL,
+    `TABLE_ID` INT NOT NULL,
     PRIMARY KEY (`ORDER_ID`),
     FOREIGN KEY (`CUSTOMER_ID`) references `customer`(`CUSTOMER_ID`),
     FOREIGN KEY (`TABLE_ID`) references `table`(`TABLE_ID`)
@@ -39,8 +39,8 @@ CREATE TABLE `order` (
 -- Create below: Table `RIIMAGES`.`order_customer`
 -- -----------------------------------------------------
 CREATE TABLE `order_customer` (
-	`ORDER_ID` VARCHAR(10) NOT NULL,
-    `CUSTOMER_ID` VARCHAR(32) NOT NULL,
+	`ORDER_ID` INT NOT NULL,
+    `CUSTOMER_ID`INT NOT NULL,
     PRIMARY KEY (`ORDER_ID`, `CUSTOMER_ID`),
      FOREIGN KEY (`ORDER_ID`) references `order`(`ORDER_ID`),
      FOREIGN KEY (`CUSTOMER_ID`) references `customer`(`CUSTOMER_ID`)
@@ -51,10 +51,10 @@ CREATE TABLE `order_customer` (
 -- Create below: Table `RIIMAGES`.`customer`
 -- -----------------------------------------------------
 CREATE TABLE `customer` (
-	`CUSTOMER_ID` VARCHAR(32) NOT NULL,
+	`CUSTOMER_ID` INT NOT NULL AUTO_INCREMENT,
     `CUSTOMER_NAME` VARCHAR(50) NOT NULL,
     `PHONE_NUMBER` VARCHAR(20) NOT NULL,
-    `SEX` VARCHAR(10) NOT NULL,
+    `SEX` INT NOT NULL,
     `BIRTH` VARCHAR(20) NOT NULL,
     `DISCOUNT_RATE` FLOAT,
     PRIMARY KEY (`CUSTOMER_ID`)
@@ -65,7 +65,7 @@ CREATE TABLE `customer` (
 -- Create below: Table `RIIMAGES`.`restaurant`
 -- -----------------------------------------------------
 CREATE TABLE `restaurant` (
-	`RESTAURANT_ID` VARCHAR(10) NOT NULL,
+	`RESTAURANT_ID` INT NOT NULL AUTO_INCREMENT,
     `RESTAURANT_NAME` VARCHAR(50) NOT NULL,
     `RESTAURANT_ADDRESS` VARCHAR(50) NOT NULL,
 	`SALES` FLOAT NOT NULL,
@@ -79,8 +79,8 @@ CREATE TABLE `restaurant` (
 -- Create below: Table `RIIMAGES`.`food`
 -- -----------------------------------------------------
 CREATE TABLE `food` (
-	`FOOD_ID` VARCHAR(10) NOT NULL,
-    `RESTAURANT_ID` VARCHAR(10) NOT NULL,
+	`FOOD_ID` INT NOT NULL AUTO_INCREMENT,
+    `RESTAURANT_ID` INT NOT NULL,
     `FOOD_TYPE` VARCHAR(20) NOT NULL,
     `FOOD_NAME` VARCHAR(20) NOT NULL,
     `PRICE` FLOAT NOT NULL,
@@ -94,10 +94,10 @@ CREATE TABLE `food` (
 -- Create below: Table `RIIMAGES`.`table`
 -- -----------------------------------------------------
 CREATE TABLE `table` (
-	`TABLE_ID` VARCHAR(10) NOT NULL,
-    `RESTAURANT_ID` VARCHAR(10) NOT NULL,
+	`TABLE_ID` INT NOT NULL AUTO_INCREMENT,
+    `RESTAURANT_ID` INT NOT NULL,
     `SEAT_NUMBER` DECIMAL(2,0) NOT NULL,
-    `TABLE_STATUS` VARCHAR(20) NOT NULL,
+    `TABLE_STATUS` INT NOT NULL,
     PRIMARY KEY (`TABLE_ID`, `RESTAURANT_ID`),
 	 FOREIGN KEY (`RESTAURANT_ID`) references `restaurant`(`RESTAURANT_ID`)
 );
