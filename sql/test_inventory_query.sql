@@ -14,7 +14,10 @@ use riimages;
 -- WHERE RESTAURANT_ID = 114514
 -- AND FOOD_ID = 3;
 
-Update food
-SET PRICE = 999, FOOD_TYPE = 雪
-WHERE RESTAURANT_ID = 1
-AND FOOD_ID = 1;
+-- Update food
+-- SET PRICE = 999, FOOD_TYPE = '雪'
+-- WHERE RESTAURANT_ID = 1
+-- AND FOOD_ID = 1;
+
+
+Update food SET PRICE = 1111 WHERE RESTAURANT_ID = 2 AND FOOD_ID = 54; 
