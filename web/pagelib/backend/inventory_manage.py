@@ -93,7 +93,7 @@ def inventory_management_page():
 
             if result:
                 # ID/Name is valid!!
-                success = sql.execute_command(cursor, cnx, query, (new_quant, st.session_state['RestaurantID'], food_id))
+                success = sql.execute_command(cursor, cnx, query, (new_quant, ) + content)
                 if success:
                     st.success("Updated successfully! You may see changes on the table above!")
                     st.experimental_rerun()
