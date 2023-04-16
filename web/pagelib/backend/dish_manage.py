@@ -33,7 +33,7 @@ def dish_management_page():
     # update the column name
     df.columns = ['FOOD ID', 'FOOD TYPE', 'FOOD NAME', 'PRICE', 'INVENTORY']
 
-    st.dataframe(df.style.set_precision(2), use_container_width = True, height=(min(len(df), 15) + 1) * 35 + 3)
+    st.dataframe(df.style.format(precision=2), use_container_width = True, height=(min(len(df), 15) + 1) * 35 + 3)
 
     st.subheader("Make changes")
 

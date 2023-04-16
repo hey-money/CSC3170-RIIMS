@@ -33,7 +33,7 @@ def inventory_management_page():
     # update the column name
     df.columns = ['FOOD ID', 'FOOD TYPE', 'FOOD NAME', 'PRICE', 'INVENTORY']
 
-    st.table(df.style.bar(color='#FFFFB9', subset=['INVENTORY'], align='mid', vmin=0).set_precision(2))
+    st.table(df.style.bar(color='#FFFFB9', subset=['INVENTORY'], align='mid', vmin=0).format(precision=2))
 
     ## update inventory
     st.subheader("Update Inventory Quantities")
