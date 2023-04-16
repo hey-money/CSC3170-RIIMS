@@ -42,8 +42,8 @@ CREATE TABLE `order_customer` (
 	`ORDER_ID` INT NOT NULL,
     `CUSTOMER_ID`INT NOT NULL,
     PRIMARY KEY (`ORDER_ID`, `CUSTOMER_ID`),
-     FOREIGN KEY (`ORDER_ID`) references `order`(`ORDER_ID`),
-     FOREIGN KEY (`CUSTOMER_ID`) references `customer`(`CUSTOMER_ID`)
+    FOREIGN KEY (`ORDER_ID`) references `order`(`ORDER_ID`),
+    FOREIGN KEY (`CUSTOMER_ID`) references `customer`(`CUSTOMER_ID`)
 );
 
 
@@ -86,7 +86,7 @@ CREATE TABLE `food` (
     `PRICE` FLOAT NOT NULL,
     `INVENTORY` DECIMAL(3,0) NOT NULL,
     PRIMARY KEY (`FOOD_ID`, `RESTAURANT_ID`),
-     FOREIGN KEY (`RESTAURANT_ID`) references `restaurant`(`RESTAURANT_ID`)
+    FOREIGN KEY (`RESTAURANT_ID`) references `restaurant`(`RESTAURANT_ID`)
 );
 
 
