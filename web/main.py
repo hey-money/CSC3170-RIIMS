@@ -10,11 +10,16 @@ import os
 import streamlit as st
 from streamlit_option_menu import option_menu as om
 
-# component imports
-import webconfig as config
+## component imports
+# web pages
 from pagelib.log_page import *
 from pagelib.backend.summary_page import summary_page
 from pagelib.backend.analysis_page import foo
+from pagelib.backend.inventory_manage import inventory_management_page
+from pagelib.backend.dish_manage import dish_management_page
+
+# utils & config
+import webconfig as config
 from utils import control as control_util
 
 
@@ -57,7 +62,9 @@ elif st.session_state["function"] == "backend":
         selected_c = om("Management panel", 
                         ["Summary", 
                          "Short term analysis",
-                         "Long term analysis",], 
+                         "Long term analysis",
+                         "Inventory management",
+                         "Dish management"], 
                     menu_icon =  "None",
         # This icon need to be updated later!!
                     icons=['house', 'ui-checks','columns','text-indent-right','ui-radios-grid','heptagon-half','eye-fill'], 
@@ -77,5 +84,13 @@ elif st.session_state["function"] == "backend":
     elif selected_c == "Long term analysis":
         foo()
         # custormer_order_page()
+    elif selected_c == "Inventory management":
+        inventory_management_page()
+    elif selected_c == "Dish management":
+        dish_management_page()
+
+    st.markdown('#')
+    st.markdown('#')
+    st.text("Log out the account by the button below:")
     st.button("Log out", on_click=control_util.move_to_log_state)
 
