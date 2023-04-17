@@ -14,7 +14,12 @@ from streamlit_option_menu import option_menu as om
 # web pages
 from pagelib.log_page import *
 from pagelib.backend.summary_page import summary_page
-from pagelib.backend.analysis_page import foo
+from pagelib.backend.analysis_page import (
+    turnover_analysis_page,
+    dish_analysis_page,
+    dish_data_mining_page
+)
+from pagelib.backend.membership_manage import membership_management_page
 from pagelib.backend.inventory_manage import inventory_management_page
 from pagelib.backend.dish_manage import dish_management_page
 
@@ -58,16 +63,18 @@ if st.session_state["function"] == "log":
 # logged in! show the backend
 elif st.session_state["function"] == "backend":
     with st.sidebar:
-        st.image("assets/logo1.png")
+        st.image("assets/logo2.png")
         selected_c = om("Management panel", 
                         ["Summary", 
-                         "Short term analysis",
-                         "Long term analysis",
-                         "Inventory management",
-                         "Dish management"], 
+                         "Turnover Analysis",
+                         "Dish Analysis",
+                         "Dish Data Mining",
+                         "Membership Analysis",
+                         "Inventory Management",
+                         "Dish Management"], 
                     menu_icon =  "None",
         # This icon need to be updated later!!
-                    icons=['house', 'ui-checks','columns','text-indent-right','ui-radios-grid','heptagon-half','eye-fill'], 
+                    icons=['house', 'ui-checks','columns','text-indent-right','eye-fill','heptagon-half','ui-radios-grid'], 
                     default_index=0)
         st.sidebar.info(
                 """
@@ -78,15 +85,17 @@ elif st.session_state["function"] == "backend":
         )
     if selected_c == "Summary":
         summary_page()
-    elif selected_c == "Short term analysis":
-        # shopping_cart_page()
-        foo()
-    elif selected_c == "Long term analysis":
-        foo()
-        # custormer_order_page()
-    elif selected_c == "Inventory management":
+    elif selected_c == "Turnover Analysis":
+        turnover_analysis_page()
+    elif selected_c == "Dish Analysis":
+        dish_analysis_page()
+    elif selected_c == "Dish Data Mining":
+        dish_data_mining_page()
+    elif selected_c == "Membership Analysis":
+        membership_management_page()      
+    elif selected_c == "Inventory Management":
         inventory_management_page()
-    elif selected_c == "Dish management":
+    elif selected_c == "Dish Management":
         dish_management_page()
 
     st.markdown('#')

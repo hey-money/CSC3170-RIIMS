@@ -1,5 +1,5 @@
 '''
-page: data visualization & analysis
+page: membership_management
 Author: Lai
 Create Date: 2023.4.16
 '''
@@ -13,15 +13,6 @@ from utils import sql
 def foo():
     st.text("Under construction!!!")
 
-def turnover_analysis_page():
+def membership_management_page():
     ##
     foo()
-
-def dish_analysis_page():
-    ##
-    foo()
-
-def dish_data_mining_page():
-    ##
-    foo()   
-
