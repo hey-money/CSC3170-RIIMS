@@ -10,7 +10,6 @@ import numpy as np
 
 from utils import sql
 from streamlit_option_menu import option_menu as om
-import  streamlit_toggle as tog
 
 
 def dish_management_page():
@@ -20,19 +19,11 @@ def dish_management_page():
     ##
     st.subheader("View dishes")
 
-    mode = st.radio
-    tog.st_toggle_switch(label="View all / Unhide only", 
-                        key="view_unhide_only", 
-                        default_value=False, 
-                        label_after = True, 
-                        inactive_color = '#D3D3D3', 
-                        active_color="#11567f", 
-                        track_color="#29B5E8"
-                        )
-    # print(st.session_state['view_unhide_only'])
+    mode = st.radio("Display Mode", ('View Unhide Only', 'View ALL'))
+    st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
     cnx, cursor = sql.create_session_cursor()
-    if st.session_state['view_unhide_only']:
+    if mode == 'View Unhide Only':
         # only shown unhide
         query = '''SELECT FOOD_ID, FOOD_TYPE, FOOD_NAME, PRICE, INVENTORY
         FROM food
@@ -51,7 +42,7 @@ def dish_management_page():
     df = pd.DataFrame(result)
 
     # update the column name
-    if st.session_state['view_unhide_only']:
+    if mode == 'View Unhide Only':
         df.columns = ['FOOD ID', 'FOOD TYPE', 'FOOD NAME', 'PRICE', 'INVENTORY']
     else:
         df.columns = ['VISIBLE', 'FOOD ID', 'FOOD TYPE', 'FOOD NAME', 'PRICE', 'INVENTORY']
