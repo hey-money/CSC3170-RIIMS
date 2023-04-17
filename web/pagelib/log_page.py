@@ -30,7 +30,7 @@ def authorize_login(name, password):
 
     ### code for fake use ###
     ID = 2
-    Name = 'LC'
+    Name = 'Lv Cha'
 
     if ID is None:
         st.warning("Invalid Login Information! Please Recheck Your Input!")
