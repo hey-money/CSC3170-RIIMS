@@ -26,25 +26,11 @@ from pagelib.backend.dish_manage import dish_management_page
 # utils & config
 import webconfig as config
 from utils import control as control_util
-
+from utils.general import add_bg_from_local
 
 st.set_page_config(page_title=config.ProjName, page_icon='assets/online-library.png')
 
-import base64
-def add_bg_from_local(image_file):
-    with open(image_file, "rb") as image_file:
-        encoded_string = base64.b64encode(image_file.read())
-    st.markdown(
-    f"""
-    <style>
-    .stApp {{
-        background-image: url(data:image/{"png"};base64,{encoded_string.decode()});
-        background-size: cover
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True
-    )
+
 add_bg_from_local('assets/bkg2_33.jpg')    
     
 
@@ -61,7 +47,7 @@ if "RestaurantID" not in st.session_state:
 if st.session_state["function"] == "log":
     c1, c2 = st.columns((1,3))
     with c1: 
-        st.image("assets/logo1.png")
+        st.image("assets/logo_transparent.png")
     with c2: 
         st.title("Restaurant Integrated Intelligent MAnaGEment System")
 
@@ -80,7 +66,7 @@ if st.session_state["function"] == "log":
 # logged in! show the backend
 elif st.session_state["function"] == "backend":
     with st.sidebar:
-        st.image("assets/logo2.png")
+        st.image("assets/logo_transparent_3.png")
         selected_c = om("Management panel", 
                         ["Summary", 
                          "Turnover Analysis",

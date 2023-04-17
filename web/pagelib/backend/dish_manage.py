@@ -20,6 +20,7 @@ def dish_management_page():
     ##
     st.subheader("View dishes")
 
+    mode = st.radio
     tog.st_toggle_switch(label="View all / Unhide only", 
                         key="view_unhide_only", 
                         default_value=False, 
