@@ -15,6 +15,6 @@ def foo():
 
 def membership_management_page():
     ##
-    st.title("")
+    st.title("Membership Management")
 
     foo()

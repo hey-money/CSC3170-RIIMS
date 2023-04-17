@@ -15,16 +15,16 @@ def foo():
 
 def turnover_analysis_page():
     ##
-    st.title("")
+    st.title("Turnover Analysis")
     foo()
 
 def dish_analysis_page():
     ##
-    st.title("")
+    st.title("Dish Analysis")
     foo()
 
 def dish_data_mining_page():
     ##
-    st.title("")
+    st.title("Dish Data Mining")
     foo()   
 

@@ -81,7 +81,7 @@ elif st.session_state["function"] == "backend":
                     default_index=0)
         st.sidebar.info(
                 """
-            Welcome to RIIMAGES Restaurant-side Backend Management Panel! Contact us with +11 45141919810.  
+            Welcome to RIIMAGES Restaurant-side Backend Management Panel [DEMO version]! Contact us with +11 45141919810.  
             
             Copyright © 2023 RIIMAGES Restaurant Integrated Intelligent MAnaGEment System
                 """
