@@ -23,6 +23,7 @@ def inventory_management_page():
     SELECT FOOD_ID, FOOD_TYPE, FOOD_NAME, PRICE, INVENTORY
     FROM food
     where (RESTAURANT_ID = %s)
+    AND VISIBLE = 1
     ''', (st.session_state['RestaurantID'], ))
     cnx.close()
 

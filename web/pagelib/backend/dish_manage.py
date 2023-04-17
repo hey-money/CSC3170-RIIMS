@@ -10,6 +10,7 @@ import numpy as np
 
 from utils import sql
 from streamlit_option_menu import option_menu as om
+import  streamlit_toggle as tog
 
 
 def dish_management_page():
@@ -18,35 +19,56 @@ def dish_management_page():
 
     ##
     st.subheader("View dishes")
+
+    tog.st_toggle_switch(label="View all / Unhide only", 
+                        key="view_unhide_only", 
+                        default_value=False, 
+                        label_after = True, 
+                        inactive_color = '#D3D3D3', 
+                        active_color="#11567f", 
+                        track_color="#29B5E8"
+                        )
+    # print(st.session_state['view_unhide_only'])
+
     cnx, cursor = sql.create_session_cursor()
-    result = sql.execute_fetchall(cursor, '''
-    SELECT FOOD_ID, FOOD_TYPE, FOOD_NAME, PRICE, INVENTORY
-    FROM food
-    where (RESTAURANT_ID = %s)
-    ''', (st.session_state['RestaurantID'], ))
+    if st.session_state['view_unhide_only']:
+        # only shown unhide
+        query = '''SELECT FOOD_ID, FOOD_TYPE, FOOD_NAME, PRICE, INVENTORY
+        FROM food
+        where (RESTAURANT_ID = %s)
+        AND VISIBLE = 1
+        '''
+    else:
+        query = '''SELECT VISIBLE, FOOD_ID, FOOD_TYPE, FOOD_NAME, PRICE, INVENTORY
+        FROM food
+        where (RESTAURANT_ID = %s)
+        '''
+
+    result = sql.execute_fetchall(cursor, query, (st.session_state['RestaurantID'], ))
     cnx.close()
 
     df = pd.DataFrame(result)
 
-    # update the column data type
-    df = df.astype({4: int})
     # update the column name
-    df.columns = ['FOOD ID', 'FOOD TYPE', 'FOOD NAME', 'PRICE', 'INVENTORY']
-
+    if st.session_state['view_unhide_only']:
+        df.columns = ['FOOD ID', 'FOOD TYPE', 'FOOD NAME', 'PRICE', 'INVENTORY']
+    else:
+        df.columns = ['VISIBLE', 'FOOD ID', 'FOOD TYPE', 'FOOD NAME', 'PRICE', 'INVENTORY']
+        df['VISIBLE'] = df['VISIBLE'].apply(lambda x: '✅' if x == 1 else '❌')
     st.dataframe(df.style.format(precision=2), use_container_width = True, height=(min(len(df), 15) + 1) * 35 + 3)
 
     st.subheader("Make changes")
 
     selected = om("Integrated  Dish  Management  Panel", 
-                    ["Add a dish", "Remove a dish", "Update a dish"], 
+                    ["Add a dish", "Hide/Unhide a dish", "Update a dish"], 
                 menu_icon =  "balloon",
-                icons=['bag-plus', 'backspace', 'clipboard-check'], 
+                icons=['bag-plus', 'eye', 'clipboard-check'], 
                 orientation='horizontal',
                 default_index=0)
     if selected == "Add a dish":
         add_dish_section()
-    elif selected =="Remove a dish":
-        remove_dish_section()
+    elif selected =="Hide/Unhide a dish":
+        hide_dish_section()
     elif selected =="Update a dish":
         update_dish_section()
 
@@ -79,44 +101,57 @@ def add_dish_section():
                 st.warning('Add a dish - failed!')
 
 
-def remove_dish_section():
+def hide_dish_section():
     ##
     food_id = st.text_input("Food ID", placeholder="Enter the food ID")
 
     st.text("The effects will appear as soon as you click the button.")
-    if st.button('Remove!'):
-        if not food_id:
-            st.warning('All input boxes should not be empty!')
-        else:
-            cnx, cursor = sql.create_session_cursor()
+    c1, c2 = st.columns(2)
+    with c1:
+        st.button('Hide!', on_click=hide_unhide_callback, args=(food_id, True))
 
-            check_query = '''
-            SELECT *
-            FROM food
-            WHERE RESTAURANT_ID = %s
-            AND FOOD_ID = %s;
-            '''
-            query = """
-            DELETE from food
-            WHERE RESTAURANT_ID = %s
-            AND FOOD_ID = %s;
-            """
-            content = (st.session_state['RestaurantID'], food_id)
-            
-            # Pre-check, see if exist!
-            result = sql.execute_fetchone(cursor, check_query, content)
+    with c2:
+        st.button('Unhide!', on_click=hide_unhide_callback, args=(food_id, False))
 
-            if result:
-                # ID is valid!!
-                success = sql.execute_command(cursor, cnx, query, content)
-                cnx.close() 
-                if success:
-                    st.success("Remove successfully! You may see changes on the table above!")
-                    st.experimental_rerun()
-                else:
-                    st.warning('Remove failed!')
+def hide_unhide_callback(food_id, do_hide):
+    ## 
+    if not food_id:
+        st.warning('All input boxes should not be empty!')
+    else:
+        cnx, cursor = sql.create_session_cursor()
+
+        check_query = '''
+        SELECT *
+        FROM food
+        WHERE RESTAURANT_ID = %s
+        AND FOOD_ID = %s;
+        '''
+        query_hide = """
+        UPDATE food SET VISIBLE = 0 WHERE RESTAURANT_ID = %s AND FOOD_ID = %s
+        """
+        query_unhide = """
+        UPDATE food SET VISIBLE = 1 WHERE RESTAURANT_ID = %s AND FOOD_ID = %s
+        """
+        content = (st.session_state['RestaurantID'], food_id)
+        
+        # Pre-check, see if exist!
+        result = sql.execute_fetchone(cursor, check_query, content)
+
+        if result:
+            # ID is valid!!
+            if do_hide:
+                success = sql.execute_command(cursor, cnx, query_hide, content)
             else:
-                st.warning('Your food ID is wrong!')
+                success = sql.execute_command(cursor, cnx, query_unhide, content)
+
+            cnx.close() 
+            if success:
+                st.success("Hide/unhide successfully! You may see changes on the table above!")
+                # st.experimental_rerun()
+            else:
+                st.warning('Hide/unhide failed!')
+        else:
+            st.warning('Your food ID is wrong!')
 
 
 def update_dish_section():
@@ -150,32 +185,39 @@ def update_dish_section():
             WHERE RESTAURANT_ID = %s
             AND FOOD_ID = %s;
             '''
-            query_prefix = '''
-            Update food 
-            SET '''
-            query_postfix = ''' 
-            WHERE RESTAURANT_ID = %s 
-            AND FOOD_ID = %s;
+            # query_prefix = '''
+            # Update food 
+            # SET '''
+            # query_postfix = ''' 
+            # WHERE RESTAURANT_ID = %s 
+            # AND FOOD_ID = %s;
+            # '''
+            query = '''
+            INSERT INTO food (RESTAURANT_ID, FOOD_TYPE, FOOD_NAME, PRICE, INVENTORY)
+            VALUES (%s, %s, %s, %s, %s)            
             '''
             result = sql.execute_fetchone(cursor, check_query, (st.session_state['RestaurantID'], food_id))
-
             if result:
                 # ID is valid!!
-                query_middle = []
-                content = []
-                if food_type:
-                    query_middle.append(' FOOD_TYPE = %s ')
-                    content.append(food_type)
-                if food_name:
-                    query_middle.append(' FOOD_NAME = %s ')
-                    content.append(food_name)                
-                if food_price:
-                    query_middle.append(' PRICE = %s ')
-                    content.append(food_price)
+                # 1. make the original invisible
+                success = sql.execute_command(cursor, cnx, '''
+                UPDATE food SET VISIBLE = 0 WHERE FOOD_ID = %s
+                ''', (food_id, ))
+                if success:
+                    print('set invisiable!')
 
-                success = sql.execute_command(cursor, cnx, query_prefix+
-                                              ','.join(query_middle)+query_postfix, 
-                                              tuple(content)+(st.session_state['RestaurantID'], food_id))
+                # 2. create a new food entity
+                result = list(result)
+                print('result:', result)
+                if food_type:
+                    result[2] = food_type
+                if food_name:
+                    result[3] = food_name
+                if food_price:
+                    result[4] = food_price
+
+                success = sql.execute_command(cursor, cnx, 
+                                              query, result[1:5]+result[6:])
                 cnx.close() 
                 if success:
                     st.success("Updated successfully! You may see changes on the table above!")
