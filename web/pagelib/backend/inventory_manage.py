@@ -85,7 +85,8 @@ def inventory_management_page():
                 Update food
                 SET INVENTORY = %s
                 WHERE RESTAURANT_ID = %s
-                AND FOOD_NAME = %s;
+                AND FOOD_NAME = %s
+                AND VISIBLE = 1;
                 """
                 content = (st.session_state['RestaurantID'], food_name)
             

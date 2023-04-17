@@ -5,7 +5,7 @@ Create Date: 2023.4.16
 '''
 import mysql.connector
 import webconfig as config
-
+from utils.general import *
 
 def create_session_cursor():
     ''' Create a sql session based on the webconfig.py 
@@ -16,7 +16,8 @@ def create_session_cursor():
             port = config.SQLConfig.port,
             user = config.SQLConfig.user,
             password = config.SQLConfig.password,
-            database = config.SQLConfig.database
+            database = config.SQLConfig.database,
+            buffered = True
         ) 
     cur = cnx.cursor()
     return cnx, cur
@@ -41,7 +42,7 @@ def execute_command(cursor, cnx, command: str, content: tuple) -> bool:
         cnx.commit()
         return True
     except Exception as e:
-        print(e)
+        log_catch_error(e)
         print('ERROR in executing command!')
         return False
 

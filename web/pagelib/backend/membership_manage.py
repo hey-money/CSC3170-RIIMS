@@ -15,4 +15,6 @@ def foo():
 
 def membership_management_page():
     ##
+    st.title("")
+
     foo()

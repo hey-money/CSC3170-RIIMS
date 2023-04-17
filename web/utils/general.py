@@ -11,6 +11,8 @@ def log_string(content: str):
     print(f'[INFO] {time.ctime()}: {content}')
 
 
-
+def log_catch_error(content: str):
+    ''' Log a string to console with time format. '''
+    print(f'[ERROR] {time.ctime()}: {content}')
 
 
