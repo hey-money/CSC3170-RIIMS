@@ -33,7 +33,7 @@ WHERE
 -- Update Table Status after meal
 UPDATE `table` 
 SET 
-    TABLE_STATUS = 1
+    TABLE_STATUS = 0
 WHERE
     TABLE_ID = 1;
 
