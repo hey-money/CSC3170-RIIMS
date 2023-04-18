@@ -16,7 +16,8 @@ from pagelib.backend._summary_page import (
     _get_range_dishes,
     _get_range_turnover,
     _process_turnover_analysis,
-    _get_best_selling_dish
+    _get_best_selling_dish, 
+    _fetch_food_data
 )
 
 
@@ -69,7 +70,9 @@ def summary_page():
     st.text('')
     st.subheader("Best selling dish")
 
-    bestselling = _get_best_selling_dish(foodorder)
+    food = _fetch_food_data()
+
+    bestselling = _get_best_selling_dish(foodorder, food)
     st.dataframe(bestselling, use_container_width=True)
 
 

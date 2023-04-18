@@ -27,6 +27,21 @@ def _fetch_order_data():
     return result
 
 
+
+def _fetch_food_data():
+    cnx, cursor = sql.create_session_cursor()
+
+    query = '''
+    SELECT * from food;
+    '''
+
+    food = sql.execute_fetchall(cursor, query, tuple())
+    food = pd.DataFrame(food)[[0, 3]]
+    food.index = food[0]
+    food.columns = ['FOOD_ID', 'FOOD_NAME']
+    return food    
+
+
 def _get_range_turnover(df, start_date, end_date):
     ''' Get turnover at a specific range. '''
     df['Money'] = df['QUANTITY'] * df['PRICE']
@@ -59,11 +74,18 @@ def _process_turnover_analysis(df, viewmode='D'):
     return ans
 
 
-def _get_best_selling_dish(df, best_n=3):
+def _get_best_selling_dish(orderfood, food, best_n=3):
     ''' Get the `best_n` selling dishes. '''
     best_n = min(best_n, 3)
-    retval = df.groupby('FOOD_ID').count().sort_values(by=['ORDER_ID'], ascending=False).head(best_n)
-    idx, value = retval.index, retval['ORDER_ID']
-    retval = df.iloc[idx][['FOOD_NAME', 'FOOD_TYPE']]
-    retval['SELLING'] = value   
+    retval = pd.DataFrame(
+        orderfood.groupby('FOOD_ID')
+        .count()
+        .sort_values(by=['ORDER_ID'], ascending=False)
+        .head(best_n)['ORDER_ID']
+    )
+    retval = retval.rename(columns={'ORDER_ID': 'SELLING'})
+    food_name = food.loc[retval.index, 'FOOD_NAME']
+    retval['FOOD_NAME'] = food_name
+
     return retval
+
