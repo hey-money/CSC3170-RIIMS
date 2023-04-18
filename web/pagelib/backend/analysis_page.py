@@ -60,8 +60,4 @@ def dish_analysis_page():
         st.warning('Please select at least one dish!')
 
 
-def dish_data_mining_page():
-    ##
-    st.title("Dish Data Mining")
-    foo()   
 

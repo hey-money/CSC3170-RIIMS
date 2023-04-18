@@ -17,10 +17,10 @@ from pagelib.backend.summary_page import summary_page
 from pagelib.backend.analysis_page import (
     turnover_analysis_page,
     dish_analysis_page,
-    dish_data_mining_page
 )
 from pagelib.backend.membership_manage import membership_management_page
 from pagelib.backend.inventory_manage import inventory_management_page
+from pagelib.backend.data_mining_page import dish_data_mining_page
 from pagelib.backend.dish_manage import dish_management_page
 
 # utils & config
