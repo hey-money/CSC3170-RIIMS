@@ -38,13 +38,13 @@ CREATE TABLE `order` (
 -- -----------------------------------------------------
 -- Create below: Table `RIIMAGES`.`order_customer`
 -- -----------------------------------------------------
-CREATE TABLE `order_customer` (
-	`ORDER_ID` INT NOT NULL,
-    `CUSTOMER_ID`INT NOT NULL,
-    PRIMARY KEY (`ORDER_ID`, `CUSTOMER_ID`),
-    FOREIGN KEY (`ORDER_ID`) references `order`(`ORDER_ID`),
-    FOREIGN KEY (`CUSTOMER_ID`) references `customer`(`CUSTOMER_ID`)
-);
+-- CREATE TABLE `order_customer` (
+-- 	`ORDER_ID` INT NOT NULL,
+--     `CUSTOMER_ID`INT NOT NULL,
+--     PRIMARY KEY (`ORDER_ID`, `CUSTOMER_ID`),
+--     FOREIGN KEY (`ORDER_ID`) references `order`(`ORDER_ID`),
+--     FOREIGN KEY (`CUSTOMER_ID`) references `customer`(`CUSTOMER_ID`)
+-- );
 
 
 -- -----------------------------------------------------
@@ -54,9 +54,9 @@ CREATE TABLE `customer` (
 	`CUSTOMER_ID` INT NOT NULL AUTO_INCREMENT,
     `CUSTOMER_NAME` VARCHAR(50) NOT NULL,
     `PHONE_NUMBER` VARCHAR(20) NOT NULL,
-    `SEX` INT NOT NULL,
+    `SEX` char(1) NOT NULL,
     `BIRTH` VARCHAR(20) NOT NULL,
-    `DISCOUNT_RATE` FLOAT,
+    `DISCOUNT_RATE` FLOAT DEFAULT 1,
     PRIMARY KEY (`CUSTOMER_ID`)
 );
 
@@ -86,7 +86,7 @@ CREATE TABLE `food` (
     `PRICE` FLOAT NOT NULL,
     `VISIBLE` INT DEFAULT 1, 
     `INVENTORY` DECIMAL(3,0) NOT NULL,
-    PRIMARY KEY (`FOOD_ID`, `RESTAURANT_ID`),
+    PRIMARY KEY (`FOOD_ID`),
     FOREIGN KEY (`RESTAURANT_ID`) references `restaurant`(`RESTAURANT_ID`)
 );
 
@@ -97,9 +97,9 @@ CREATE TABLE `food` (
 CREATE TABLE `table` (
 	`TABLE_ID` INT NOT NULL AUTO_INCREMENT,
     `RESTAURANT_ID` INT NOT NULL,
-    `SEAT_NUMBER` DECIMAL(2,0) NOT NULL,
+    `SEAT_NUMBER` DECIMAL(2,0) NOT NULL DEFAULT 0,
     `TABLE_STATUS` INT NOT NULL,
-    PRIMARY KEY (`TABLE_ID`, `RESTAURANT_ID`),
+    PRIMARY KEY (`TABLE_ID`),
 	 FOREIGN KEY (`RESTAURANT_ID`) references `restaurant`(`RESTAURANT_ID`)
 );
 
