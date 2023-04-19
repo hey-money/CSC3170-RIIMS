@@ -15,11 +15,11 @@ from pagelib.backend._analysis_page import (
 )
 
 
-def foo():
+def foo() -> None:
     st.text("Under construction!!!")
 
 
-def turnover_analysis_page():
+def turnover_analysis_page() -> None:
     ##
     st.title("Turnover Analysis")
 
@@ -39,7 +39,7 @@ def turnover_analysis_page():
     st.bar_chart(chart_data)
 
 
-def dish_analysis_page():
+def dish_analysis_page() -> None:
     ##
     st.title("Dish Analysis")
 

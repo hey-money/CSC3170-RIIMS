@@ -21,7 +21,7 @@ from pagelib.backend._summary_page import (
 )
 
 
-def summary_page():
+def summary_page() -> None:
     st.title('General Sales Summary')
     st.text(f'You are logging as: {st.session_state["RestaurantName"]}')
 

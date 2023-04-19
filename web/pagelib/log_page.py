@@ -6,7 +6,7 @@ from utils import control as control_util
 from utils import general as general_util
 from utils import sql
 
-def authorize_login(name, password):
+def authorize_login(name, password) -> None:
 
     cnx, cursor = sql.create_session_cursor()
 
@@ -42,7 +42,7 @@ def authorize_login(name, password):
         st.session_state["RestaurantName"] = Name
 
     
-def log_in_page():
+def log_in_page() -> None:
     st.text("Please login here.")
     login_name = st.text_input("Restaurant name", placeholder="keep empty and login!")
     login_password = st.text_input("Password", placeholder="keep empty and login!")
@@ -50,7 +50,7 @@ def log_in_page():
     st.button("Log In!", on_click=authorize_login, args=(login_name, login_password))
 
 
-def sign_up_page():
+def sign_up_page() -> None:
     st.text("Please leave your information here.")
     st.text("Our sales manager will contact you later to sign the contract.")
     st.text("Then, your restaurant account will be created.")

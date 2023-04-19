@@ -12,7 +12,7 @@ from utils import sql
 from streamlit_option_menu import option_menu as om
 
 
-def dish_management_page():
+def dish_management_page() -> None:
     st.title("Dish management")
     st.text("In this page, you can view/add/remove/update specific dishes!.")
 
@@ -65,7 +65,7 @@ def dish_management_page():
         update_dish_section()
 
 
-def add_dish_section():
+def add_dish_section() -> None:
     ##
     food_type = st.text_input("Food Type", placeholder="Enter the food type")
     food_name = st.text_input("Food Name", placeholder="Enter the food name")
@@ -93,7 +93,7 @@ def add_dish_section():
                 st.warning('Add a dish - failed!')
 
 
-def hide_dish_section():
+def hide_dish_section() -> None:
     ##
     food_id = st.text_input("Food ID", placeholder="Enter the food ID")
 
@@ -105,7 +105,7 @@ def hide_dish_section():
     with c2:
         st.button('Unhide!', on_click=hide_unhide_callback, args=(food_id, False))
 
-def hide_unhide_callback(food_id, do_hide):
+def hide_unhide_callback(food_id, do_hide) -> None:
     ## 
     if not food_id:
         st.warning('All input boxes should not be empty!')
@@ -146,7 +146,7 @@ def hide_unhide_callback(food_id, do_hide):
             st.warning('Your food ID is wrong!')
 
 
-def update_dish_section():
+def update_dish_section() -> None:
     ##
     # st.columns
     st.text('You may select a food by ID first:')

@@ -10,7 +10,7 @@ import numpy as np
 from utils import sql
 
 
-def _fetch_foodorder_data():
+def _fetch_foodorder_data() -> pd.DataFrame:
     cnx, cursor = sql.create_session_cursor()
     query = '''
     SELECT od.order_id, od.food_id, food_name, food_type, quantity, price, order_time from 
@@ -29,7 +29,7 @@ def _fetch_foodorder_data():
     return result
 
 
-def _process_overturn_analysis(df, viewmode='D'):
+def _process_overturn_analysis(df: pd.DataFrame, viewmode='D') -> pd.DataFrame:
     ''' Processing for the overturn analysis. This function receives food order, then:
         1. Calculate the price * quantity
         2. Group by FOOD_TYPE
@@ -48,7 +48,7 @@ def _process_overturn_analysis(df, viewmode='D'):
     return ans
 
 
-def _process_dish_analysis(df, viewmode='D'):
+def _process_dish_analysis(df: pd.DataFrame, viewmode='D') -> pd.DataFrame:
     ''' Processing for the overturn analysis. This function receives food order,
         Then group by food name and date respectively.
     '''

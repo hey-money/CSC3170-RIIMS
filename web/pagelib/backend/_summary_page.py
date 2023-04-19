@@ -11,7 +11,7 @@ import datetime
 from utils import sql
 
 
-def _fetch_order_data():
+def _fetch_order_data() -> pd.DataFrame:
     cnx, cursor = sql.create_session_cursor()
     query = '''
     select order_id, order_time 
@@ -28,7 +28,7 @@ def _fetch_order_data():
 
 
 
-def _fetch_food_data():
+def _fetch_food_data() -> pd.DataFrame:
     cnx, cursor = sql.create_session_cursor()
 
     query = '''
@@ -42,26 +42,26 @@ def _fetch_food_data():
     return food    
 
 
-def _get_range_turnover(df, start_date, end_date):
+def _get_range_turnover(df: pd.DataFrame, start_date, end_date) -> pd.DataFrame:
     ''' Get turnover at a specific range. '''
     df['Money'] = df['QUANTITY'] * df['PRICE']
     mask = (df['ORDER_TIME'] > start_date) & (df['ORDER_TIME'] < end_date)
     return df.loc[mask]['Money'].sum()
 
 
-def _get_range_orders(df, start_date, end_date):
+def _get_range_orders(df: pd.DataFrame, start_date, end_date) -> pd.DataFrame:
     ''' Get turnover at a specific range. '''
     mask = (df['ORDER_TIME'] > start_date) & (df['ORDER_TIME'] < end_date)
     df = df.drop_duplicates(subset=['ORDER_ID'])
     return df.loc[mask]['ORDER_ID'].count()
 
 
-def _get_range_dishes(df, start_date, end_date):
+def _get_range_dishes(df: pd.DataFrame, start_date, end_date) -> pd.DataFrame:
     mask = (df['ORDER_TIME'] > start_date) & (df['ORDER_TIME'] < end_date)
     return df.loc[mask]['ORDER_ID'].count()
 
 
-def _process_turnover_analysis(df, viewmode='D'):
+def _process_turnover_analysis(df: pd.DataFrame, viewmode='D') -> pd.DataFrame:
     ''' Processing for the overturn analysis. This function receives food order, then:
         1. Calculate the price * quantity
         2. Group by date (with viewmode)
@@ -74,7 +74,7 @@ def _process_turnover_analysis(df, viewmode='D'):
     return ans
 
 
-def _get_best_selling_dish(orderfood, food, best_n=3):
+def _get_best_selling_dish(orderfood: pd.DataFrame, food, best_n: int=3) -> pd.DataFrame:
     ''' Get the `best_n` selling dishes. '''
     best_n = min(best_n, 3)
     retval = pd.DataFrame(

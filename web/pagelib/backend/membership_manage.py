@@ -13,7 +13,7 @@ from utils import sql
 def foo():
     st.text("Under construction!!!")
 
-def membership_management_page():
+def membership_management_page() -> None:
     ##
     st.title("Membership Management")
 
