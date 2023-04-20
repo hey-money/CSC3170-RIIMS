@@ -8,24 +8,20 @@ import pandas as pd
 import numpy as np
 
 from utils import sql
-from sklearn.linear_model import LinearRegression
+from matplotlib import pyplot as plt 
+from matplotlib import ticker
 
+plt.rcParams['font.sans-serif']=['SimHei'] 
 from pagelib.backend._analysis_page import(
     _fetch_foodorder_data,
     _process_dish_analysis
 )
+from pagelib.backend._data_mining_page import (
+    _LR_predict_selling, 
+    _get_support_matrix,
+    _get_combinations,
+)
 
-
-def _LR_predict_selling(previous: pd.DataFrame, forecast_days=5) -> pd.DataFrame:
-    X = np.arange(len(previous)).reshape(-1, 1)
-    Y = previous.copy().to_numpy()
-
-    reg = LinearRegression().fit(X,Y)
-    Predict_X = np.arange(len(previous) + forecast_days).reshape(-1, 1)
-
-    Predict_Y = reg.predict(Predict_X)
-
-    return Predict_X, Predict_Y
 
 
 def dish_data_mining_page() -> None:
@@ -34,7 +30,35 @@ def dish_data_mining_page() -> None:
     
     st.subheader("Frequent Selling Groups")
 
+    Support_Matrix, food = _get_support_matrix(st.session_state['RestaurantID'])
+    combs = _get_combinations(Support_Matrix, st.session_state['RestaurantID'])
 
+    fig, ax = plt.subplots()
+    ax.imshow(Support_Matrix, cmap='coolwarm')
+    print(food[3].tolist())
+    # plt.xlabel(food[3].tolist())
+    # plt.ylabel(food[3].tolist())
+    ax.xaxis.set_major_locator(
+        ticker.LinearLocator(len(food))
+    )
+    ax.xaxis.set_major_formatter(
+        ticker.FuncFormatter(lambda x, pos: food[3].tolist()[pos])
+    )
+    plt.xticks(rotation=45)
+
+    ax.yaxis.set_major_locator(
+        ticker.LinearLocator(len(food))
+    )
+    ax.yaxis.set_major_formatter(
+        ticker.FuncFormatter(lambda x, pos: food[3].tolist()[pos])
+    )
+    # plt.yticks(rotation=90)
+    st.pyplot(fig)
+
+    bestgroups = list(zip(*combs))
+    bestgroups = pd.DataFrame({'Dish1': bestgroups[0], 'Dish2': bestgroups[1], 'Support Value': bestgroups[2]})
+
+    st.dataframe(bestgroups, use_container_width=True)
 
     st.subheader("Dish Sale Prediction")
 

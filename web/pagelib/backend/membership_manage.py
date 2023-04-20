@@ -8,6 +8,7 @@ import pandas as pd
 import numpy as np
 import datetime
 
+import time
 from utils import sql
 
 
@@ -42,7 +43,7 @@ def membership_management_page() -> None:
 
     st.subheader('Coupons AutoSend')
 
-    days = st.slider('Send Coupons to customers who havn\'t visit for days:', 0, 30, 7)
+    days = st.slider('Send Coupons to customers who havn\'t visit for days:', 0, 14, 7)
 
     discount_rate = st.slider('Coupons Discount Rate:', 0.5, 1., 0.88)
 
@@ -54,5 +55,10 @@ def membership_management_page() -> None:
     st.dataframe(result_coupon, use_container_width=True, height=(min(len(result), 12) + 1) * 35 + 3)
 
     if st.button('Send Coupons!'):
-        st.success('Send coupons by Wechat / Zhifubao successfully!')
+        progress_text = "Operation in progress. Please wait."
+        my_bar = st.progress(0, text=progress_text)        
+        for i in range(100):
+            time.sleep(np.random.rand()*0.006)
+            my_bar.progress(i+1, text=progress_text)
+        st.success('Send coupons to Wechat / Zhifubao successfully!')
 
