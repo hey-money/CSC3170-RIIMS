@@ -67,7 +67,7 @@ if st.session_state["function"] == "log":
 elif st.session_state["function"] == "backend":
     with st.sidebar:
         st.image("assets/logo_transparent_3.png")
-        selected_c = om("Management panel", 
+        selected_c = om("Management Panel", 
                         ["Summary", 
                          "Turnover Analysis",
                          "Dish Analysis",

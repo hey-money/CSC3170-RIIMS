@@ -23,15 +23,14 @@ from pagelib.backend._data_mining_page import (
 )
 
 
-
+# @st.cache_data
 def dish_data_mining_page() -> None:
     ##
     st.title("Dish Data Mining")
     
-    st.subheader("Frequent Selling Groups")
+    st.subheader("Frequent Selling Groups - Support Matrix")
 
     Support_Matrix, food = _get_support_matrix(st.session_state['RestaurantID'])
-    combs = _get_combinations(Support_Matrix, st.session_state['RestaurantID'])
 
     fig, ax = plt.subplots()
     ax.imshow(Support_Matrix, cmap='coolwarm')
@@ -55,8 +54,14 @@ def dish_data_mining_page() -> None:
     # plt.yticks(rotation=90)
     st.pyplot(fig)
 
+    st.subheader("Highest Support Value View")
+
+    threshold = st.slider('Support Value Threshold', 0.4, 1., 0.6)
+    combs = _get_combinations(Support_Matrix, st.session_state['RestaurantID'], threshold)
     bestgroups = list(zip(*combs))
     bestgroups = pd.DataFrame({'Dish1': bestgroups[0], 'Dish2': bestgroups[1], 'Support Value': bestgroups[2]})
+
+    bestgroups = bestgroups.sort_values(by='Support Value', ascending=False)
 
     st.dataframe(bestgroups, use_container_width=True)
 

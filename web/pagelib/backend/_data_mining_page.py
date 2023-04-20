@@ -23,6 +23,7 @@ def _LR_predict_selling(previous: pd.DataFrame, forecast_days=5) -> pd.DataFrame
 
     return Predict_X, Predict_Y
 
+@st.cache_data
 def _get_support_matrix(id):
     cnx, cursor = sql.create_session_cursor()
     food = sql.execute_fetchall(cursor, 'SELECT * from food where RESTAURANT_ID=%s;', [id])
@@ -40,9 +41,12 @@ def _get_support_matrix(id):
     Dish_Relation= pd.DataFrame(np.zeros((Food_num, Food_num)),
                                 columns=food[0], index=food[0])
 
+    Order_detail = sql.execute_fetchall(cursor, 'SELECT * from order_details', tuple())
+    Order_detail = pd.DataFrame(Order_detail)
+
     for i in Order[0]:
-        Temp = sql.execute_fetchall(cursor, 'SELECT * from order_details where ORDER_ID=%s', [i])
-        Temp = pd.DataFrame(Temp)
+        Temp = Order_detail.loc[ Order_detail[0] == i ]
+        # Temp = pd.DataFrame(Temp)
         for j in Temp[1].tolist():
             for k in Temp[1].tolist():
                 Dish_Relation.loc[j, k] += 1
@@ -51,8 +55,8 @@ def _get_support_matrix(id):
     return Dish_Relation / Order_num, food
 
 
-def _get_combinations(Support_Matrix, id):
-    idx, idy = np.where(Support_Matrix>0.6)
+def _get_combinations(Support_Matrix, id, threshold):
+    idx, idy = np.where(Support_Matrix > threshold)
     combs = set()
     for i in range(len(idx)):
         if idx[i] != idy[i]:
