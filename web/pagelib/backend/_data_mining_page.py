@@ -61,7 +61,7 @@ def _get_combinations(Support_Matrix, id, threshold):
     for i in range(len(idx)):
         if idx[i] != idy[i]:
             combs.add((min(idx[i], idy[i]), max(idx[i], idy[i])))
-    print(combs)
+    # print(combs)
 
     combs = list(combs)
     cnx, cursor = sql.create_session_cursor()

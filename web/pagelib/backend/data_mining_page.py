@@ -34,7 +34,7 @@ def dish_data_mining_page() -> None:
 
     fig, ax = plt.subplots()
     ax.imshow(Support_Matrix, cmap='coolwarm')
-    print(food[3].tolist())
+    # print(food[3].tolist())
     # plt.xlabel(food[3].tolist())
     # plt.ylabel(food[3].tolist())
     ax.xaxis.set_major_locator(
@@ -42,6 +42,7 @@ def dish_data_mining_page() -> None:
     )
     ax.xaxis.set_major_formatter(
         ticker.FuncFormatter(lambda x, pos: food[3].tolist()[pos])
+        # ticker.FuncFormatter(lambda x, pos: food[3].tolist()[pos]+f'[{str(food[0].tolist()[pos])}]')
     )
     plt.xticks(rotation=45)
 
@@ -50,6 +51,7 @@ def dish_data_mining_page() -> None:
     )
     ax.yaxis.set_major_formatter(
         ticker.FuncFormatter(lambda x, pos: food[3].tolist()[pos])
+        # ticker.FuncFormatter(lambda x, pos: food[3].tolist()[pos]+f'[{str(food[0].tolist()[pos])}]')
     )
     # plt.yticks(rotation=90)
     st.pyplot(fig)
@@ -59,9 +61,13 @@ def dish_data_mining_page() -> None:
     threshold = st.slider('Support Value Threshold', 0.4, 1., 0.6)
     combs = _get_combinations(Support_Matrix, st.session_state['RestaurantID'], threshold)
     bestgroups = list(zip(*combs))
-    bestgroups = pd.DataFrame({'Dish1': bestgroups[0], 'Dish2': bestgroups[1], 'Support Value': bestgroups[2]})
 
-    bestgroups = bestgroups.sort_values(by='Support Value', ascending=False)
+    if len(bestgroups) > 0:
+        bestgroups = pd.DataFrame({'Dish1': bestgroups[0], 'Dish2': bestgroups[1], 'Support Value': bestgroups[2]})
+        bestgroups = bestgroups.sort_values(by='Support Value', ascending=False)
+    else:
+        bestgroups = pd.DataFrame({'Dish1': [], 'Dish2': [], 'Support Value': []})
+
 
     st.dataframe(bestgroups, use_container_width=True)
 
